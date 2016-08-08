@@ -58,17 +58,21 @@ module Flickrage
       def init_output
         return if validate_output
 
-        output = speaker.ask('Please enter the path of the output directory:',
+        output = speaker.ask('Please enter existing path of the output directory:',
                              path: true)
 
-        unless valid_output?(output)
-          increment_error_counter(Flickrage::PathError, output)
-          return init_output
+        if valid_output?(output)
+          reset_error_counter
+
+          Flickrage.config.output = output
         end
 
-        reset_error_counter
-
-        Flickrage.config.output = output
+        increment_error_counter(Flickrage::PathError, output) do
+          raise Flickrage::PathError, output unless speaker.yes?("Do you want create path, #{output}?")
+          FileUtils.mkdir_p(output)
+          Flickrage.config.output = output
+        end
+        init_output
       end
 
       def validate_output

@@ -32,7 +32,7 @@ module Flickrage
 
       speaker.add_padding
 
-      raise CollageError, 'Try again later...' unless valid_list?(list)
+      raise Flickrage::CollageError, 'Try again later...' unless valid_list?(list)
 
       logger.warn("Congrats! You can find composed collage at #{list.collage_path}")
 

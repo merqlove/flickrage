@@ -135,8 +135,8 @@ module Flickrage
       init_flickraw
 
       pipeline.run
-    rescue Flickrage::NoKeysError, Flickrage::SearchError, Flickrage::DownloadError,
-           Flickrage::NumberError, Flickrage::PathError => e
+    rescue Flickrage::NoKeysError, Flickrage::SearchError, Flickrage::DownloadError, Flickrage::CollageError,
+           Flickrage::ResizeError, Flickrage::NumberError, Flickrage::PathError => e
       error_simple(e)
     rescue => e
       error_with_backtrace(e)
@@ -160,12 +160,12 @@ module Flickrage
     no_commands do
       def error_simple(e)
         logger.error e.message
-        raise e
+        raise e if Flickrage.config.verbose
       end
 
       def error_with_backtrace(e)
         logger.error e.message
-        backtrace(e) if options.include? 'trace'
+        backtrace(e) if Flickrage.config.verbose
         raise e
       end
 
@@ -174,9 +174,12 @@ module Flickrage
       end
 
       def cleanup
-        return unless options['output']
-        return unless Dir.exist?(options['output'])
+        return logger.debug('Output directory not exists, cleanup skipped') unless cleanup?
         FileUtils.rm_rf("#{options['output']}/.", secure: true)
+      end
+
+      def cleanup?
+        options['output'] && Dir.exist?(options['output'])
       end
 
       def setup_config
