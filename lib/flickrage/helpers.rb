@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'tty-spinner'
 require 'pastel'
 
@@ -19,20 +20,31 @@ module Flickrage
       def sample_words(n = 1)
         Flickrage.dict.sample(n).map(&:strip)
       end
+
+      def sample_words_strict(n = 1, except: [])
+        return [] if Flickrage.dict.size < (n + except.size)
+        Flickrage.dict
+                 .sample(n + except.size)
+                 .map(&:strip)
+                  .-(except)
+                 .first(n)
+      end
     end
 
     module Tty
-      def spinner(message: '', format: :dots, &block)
+      def spinner(message: '', format: :dots)
         spin = TTY::Spinner.new('[:spinner] :title',
                                 format: format,
+                                interval: 20,
+                                hide_cursor: true,
                                 success_mark: color(color: :green, message: '+'),
                                 error_mark: color(color: :red, message: 'x'))
         spin.update(title: message)
+        spin.start
 
         return spin unless block_given?
 
-        spin.start
-        block.call(spin)
+        yield(spin)
       end
 
       private
@@ -59,11 +71,8 @@ module Flickrage
       end
     end
 
-    # UniversalSpeaker is a module to deal with singleton methods.
-    # Used to give classes access only for selected methods
-    #
     module UniversalSpeaker
-      %w(ask yes? no? print_table).each do |name|
+      %w(ask yes? no? print_table add_padding).each do |name|
         define_singleton_method(:"#{name}") { |*args| Flickrage.logger.send(:"#{name}", *args) }
       end
     end

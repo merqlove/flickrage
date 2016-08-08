@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Flickrage
   module Entity
     class Image < Dry::Types::Struct
@@ -11,25 +12,25 @@ module Flickrage
       attribute :width,     Types::Coercible::Int
       attribute :height,    Types::Coercible::Int
 
-      attribute :downloaded, Types::Bool.default(false)
-      attribute :resized,    Types::Bool.default(false)
+      attribute :download,  Types::Bool.default(false)
+      attribute :resize,    Types::Bool.default(false)
 
-      alias_method :downloaded?, :downloaded
-      alias_method :resized?,    :resized
+      alias downloaded? download
+      alias resized? resize
 
       %w(download resize).each do |m|
-        define_method(:"#{m}_finished") do
-          self.instance_variable_set(:"@#{m}ed", true)
+        define_method(:"finish_#{m}") do
+          instance_variable_set(:"@#{m}", true)
           self
         end
       end
 
-      def local_path(output)
-        File.absolute_path("#{output}/#{file_name}")
+      def local_path
+        File.absolute_path("#{Flickrage.config.output}/#{file_name}")
       end
 
-      def resize_path(output)
-        File.absolute_path("#{output}/#{Flickrage.config.resize_file_prefix}#{file_name}")
+      def resize_path
+        File.absolute_path("#{Flickrage.config.output}/#{Flickrage.config.resize_file_prefix}#{file_name}")
       end
 
       def file_name=(file_name)
