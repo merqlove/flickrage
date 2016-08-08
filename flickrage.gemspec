@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Alexander Merkulov']
   spec.email         = ['sasha@merqlove.ru']
 
-  spec.summary       = %q{Collage maker for the Flickr.}
-  spec.description   = %q{Small tool to download few pics & build collage from them.}
+  spec.summary       = %q{Another one Flickr collage maker.}
+  spec.description   = %q{Little tool with idea of downloading random top-n pictures from the Flickr, resize it properly & build collage from them!}
   spec.homepage      = 'https://github.com/merqlove/flickrage'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.licenses      = ['MIT']
 
-  spec.required_ruby_version = '>= 2.0.0'
+  spec.required_ruby_version = '>= 2.3.0'
 
   spec.add_dependency 'thor', '~> 0.19'
   spec.add_dependency 'flickraw', '~> 0.9.9'
@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
 
   spec.add_development_dependency 'json', '~> 1.8.1'
-  # spec.add_development_dependency 'tty-command', '~> 0.2.0'
   spec.add_development_dependency 'rspec', '~> 3.5.0'
   spec.add_development_dependency 'rspec-core', '~> 3.5.0'
   spec.add_development_dependency 'rspec-expectations', '~> 3.5.0'

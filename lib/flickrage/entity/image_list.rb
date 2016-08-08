@@ -1,15 +1,16 @@
+# frozen_string_literal: true
 module Flickrage
   module Entity
     class ImageList < Dry::Types::Struct
       constructor_type(:schema)
 
-      attribute :images,     Types::Strict::Array.member(Flickrage::Entity::Image).default([])
-      attribute :not_founds, Types::Strict::Array.member(Types::Coercible::String).default([])
-      attribute :total ,     Types::Int.optional.default(0)
-      attribute :composed,   Types::Bool.default(false)
-      attribute :collage,    Types::Coercible::String
+      attribute :images,       Types::Strict::Array.member(Flickrage::Entity::Image).default([])
+      attribute :not_founds,   Types::Strict::Array.member(Types::Coercible::String).default([])
+      attribute :total,        Types::Int.optional.default(0)
+      attribute :compose,      Types::Bool.default(false)
+      attribute :collage_path, Types::Coercible::String
 
-      alias_method :composed?, :composed
+      alias composed? compose
 
       def downloaded
         images.select(&:downloaded?)
@@ -19,8 +20,8 @@ module Flickrage
         images.select(&:resized?)
       end
 
-      def compose_finished
-        @composed = true
+      def finish_compose
+        @compose = true
         self
       end
 
@@ -42,12 +43,8 @@ module Flickrage
         total == Flickrage.config.max
       end
 
-      def has_keys
-
-      end
-
-      def not_founds=(not_founds)
-        @not_founds = not_founds
+      def merge_not_founds(new_not_founds)
+        @not_founds = not_founds + new_not_founds
         self
       end
 
@@ -58,6 +55,11 @@ module Flickrage
 
       def size
         images.size
+      end
+
+      def collage_path=(file_name = nil)
+        file_name = "collage.#{Time.now.to_i}.jpg" if file_name.nil?
+        @collage_path = File.absolute_path("#{Flickrage.config.output}/#{file_name}")
       end
     end
   end

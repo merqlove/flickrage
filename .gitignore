@@ -6,8 +6,9 @@
 /doc/
 /pkg/
 /spec/reports/
-/tmp/
-.ruby-version
+/tmp/*
+!/tmp/.keep
 .irb_history
-
+/log/*
+!/log/.keep
 .idea

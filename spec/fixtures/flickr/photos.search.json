@@ -1,0 +1,6 @@
+{ "photos": { "page": 1, "pages": "403822", "perpage": 1, "total": "403822",
+  "photo": [
+    { "id": "%id%", "owner": "90535065@N03", "secret": "c99ce5f23f", "server": "8200",
+      "url_l": "%url%", "width_l": %width%, "height_l": %height%, "farm": 9,
+      "title": "%title%", "ispublic": 1, "isfriend": 0, "isfamily": 0 }
+  ] }, "stat": "ok" }

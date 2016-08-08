@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Flickrage
   module Service
     class Search
@@ -6,14 +7,17 @@ module Flickrage
       def run(keyword)
         result = search(keyword)
 
-        return if result.size == 0
+        return if result.size < 1
 
-        prepare(result.first, keyword)
+        image(result.first, keyword)
+      rescue StandardError => e
+        logger.debug(e)
+        nil
       end
 
       private
 
-      def prepare(result, keyword)
+      def image(result, keyword)
         return unless result.respond_to?(:url_l)
 
         Flickrage::Entity::Image.new(
