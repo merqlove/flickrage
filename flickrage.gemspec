@@ -13,9 +13,9 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Little tool with idea of downloading random top-n pictures from the Flickr, resize it properly & build collage from them!}
   spec.homepage      = 'https://github.com/merqlove/flickrage'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|assets|spec|features)/}) }
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
   spec.licenses      = ['MIT']
 
