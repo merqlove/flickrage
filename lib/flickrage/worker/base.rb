@@ -37,7 +37,12 @@ module Flickrage
       def increment_error_counter(error, value)
         @opts[:ask_error_counter] += 1
 
-        raise error, value if opts[:ask_error_counter] > MAX_ASK_ERRORS
+        return unless opts[:ask_error_counter] >= MAX_ASK_ERRORS
+        return yield if block_given?
+        raise error, value
+      rescue SystemCallError => e
+        logger.error(e.message)
+        raise error, value
       end
 
       def reset_error_counter

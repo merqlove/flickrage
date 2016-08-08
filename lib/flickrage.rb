@@ -31,7 +31,7 @@ module Flickrage
   setting :pool_size, 5
   setting :pool
 
-  setting :grid, 5
+  setting :grid, 2
   setting :max, 10
   setting :output
 
@@ -172,7 +172,7 @@ module Flickrage
     end
   end
 
-  # Here is something with imagemagick?
+  # Something wrong with the process?
   #
   class CollageError < BaseError
     def initialize(*args)
