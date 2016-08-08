@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Flickrage by merqlove</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Flickrage</h1>
+      <h2 class="project-tagline">Another one Flickr collage maker.</h2>
+      <a href="https://github.com/merqlove/flickrage" class="btn">View on GitHub</a>
+      <a href="https://github.com/merqlove/flickrage/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/merqlove/flickrage/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p><a href="http://badge.fury.io/rb/flickrage"><img src="https://badge.fury.io/rb/flickrage.svg" alt="Gem Version"></a>
+<a href="https://travis-ci.org/merqlove/flickrage"><img src="https://travis-ci.org/merqlove/flickrage.svg?branch=master" alt="Build Status"></a></p>
+
+<p>Little tool with idea of downloading random top-n pictures from the Flickr, resize it properly &amp; build collage from them!</p>
+
+<p>Here are some features:</p>
+
+<ul>
+<li>Search at Flickr with words from your own dictionary or provide just a few words :).</li>
+<li>Multiple threads out of the box, no matter how many images you want.</li>
+<li>Auto-cleanup (optional).</li>
+<li>Logging into a file (optional).</li>
+<li>Predefined timeouts for long requests (unresponding links or similar).</li>
+<li>Verbose mode for research (optional).</li>
+<li>Quiet mode for silence (optional).</li>
+</ul>
+
+<h2>
+<a id="compatibility" class="anchor" href="#compatibility" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compatibility</h2>
+
+<p>Ruby versions 2.3.0 and higher.</p>
+
+<p><a href="https://raw.githubusercontent.com/merqlove/flickrage/prepare/assets/collage.jpg"><img src="https://raw.githubusercontent.com/merqlove/flickrage/prepare/assets/collage.jpg" alt="Flickrage collage example"></a></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Install it yourself as:</p>
+
+<pre><code>$ gem install flickrage
+</code></pre>
+
+<p>System Wide Install (OSX, *nix):</p>
+
+<pre><code>$ sudo gem install flickrage          
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>It's pretty simple at the start:</p>
+
+<pre><code>$ flickrage -k some nice grapefruit
+</code></pre>
+
+<h3>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h3>
+
+<p>You'll need to get/generate an API keys from your Flickr profile at <a href="https://www.flickr.com/account/sharing">https://www.flickr.com/account/sharing</a></p>
+
+<p>Next you can export Flickr API keys as ENV variables:  </p>
+
+<pre><code>$ export FLICKR_API_KEY="SOMEKEY"
+$ export FLICKR_SHARED_SECRET="SOMESECRET"
+</code></pre>
+
+<p>Or set keys with arguments:</p>
+
+<pre><code>$ flickrage --flickr-api-key SOMELONGKEY --flickr-shared-secret SOMELONGSECRET
+</code></pre>
+
+<h3>
+<a id="how-to" class="anchor" href="#how-to" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How-To</h3>
+
+<p>Select output folder:</p>
+
+<pre><code>$ flickrage -k some nice grapefruit -o ./tmp
+</code></pre>
+
+<p>Enter collage file_name:</p>
+
+<pre><code>$ flickrage -k some nice grapefruit --file-name some.jpg
+</code></pre>
+
+<p>Get collage of top 10 images:</p>
+
+<pre><code>$ flickrage -k some nice grapefruit --max 10
+</code></pre>
+
+<p>Get collage of top 20 images:</p>
+
+<pre><code>$ flickrage -k some nice grapefruit --max 20
+</code></pre>
+
+<p>Get collage of top 10 images custom width &amp; height:</p>
+
+<pre><code>$ flickrage -k some nice grapefruit --max 10 --width 160 --height 120
+</code></pre>
+
+<p>Provide your own words dictionary:</p>
+
+<pre><code>$ flickrage -k some nice grapefruit --dict-path /usr/share/dict/words
+</code></pre>
+
+<h3>
+<a id="all-options" class="anchor" href="#all-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>All options:</h3>
+
+<pre><code>&gt; $ flickrage c 
+
+Options:
+  -k, --keywords=some nice grapefruit                
+      [--max=10]                                     # Select number of files.
+                                                     # Default: 10
+                                                     # Possible values: 1, ..., 20
+      [--grid=2]                                     # Select grid base number.
+      [--width=120]                                  # Set width for resize downloaded images.
+      [--height=80]                                  # Set height for resize downloaded images.
+  -l, [--log=/Users/someone/.flickrage/main.log]     # Log file path. By default logging is disabled.
+  -o, [--output=./tmp]                               # Output directory, where all data will be stored.
+      [--file-name=./some.png]                       # Name for the file with collage.
+      [--dict-path=/usr/share/dict/words]            # Path to the file with multiline words (dictionary).
+  -c, [--cleanup], [--no-cleanup]                    # Cleanup files before collage.
+  -v, [--verbose], [--no-verbose]                    # Verbose mode.
+  -q, [--quiet], [--no-quiet]                        # Quiet mode. If don't need any messages and in console.
+      [--flickr-api-key=YOURLONGAPIKEY]              # FLICKR_API_KEY. if you can't use environment.
+      [--flickr-shared-secret=YOURLONGSHAREDSECRET]  # FLICKR_SHARED_SECRET. if you can't use environment.
+
+`flickrage` is a tool which loves search on the Flickr &amp; making collages from findings.
+
+You have to enter name of the output file and a max number of downloading files.
+
+Parameters helps you specify rectangle size for each image, collage name, it's location, ..., and well the grid base size.
+</code></pre>
+
+<h3>
+<a id="screenshot" class="anchor" href="#screenshot" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Screenshot:</h3>
+
+<p><img src="https://raw.githubusercontent.com/merqlove/flickrage/prepare/assets/example.png" alt="Flickrage example"></p>
+
+<h3>
+<a id="real-world-example" class="anchor" href="#real-world-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Real world example</h3>
+
+<pre><code>$ flickrage c -k one two three --cleanup --flickr-api-key ************ --flickr-shared-secret ***********
+  Thank you for choosing Flickrage, you will find me as your Flickr collage companion :)
+
+  Received keywords: [one, two, three, archencephalic, trub, soiree, barring, Cestodaria, readorn, Thurnia]
+  [+] Searching (found image ID#15415535811)
+
+  Found 10 images:
+  keyword      id           url                                                               title                              width  height
+  one          16214454241  https://farm9.staticflickr.com/8618/16214454241_3ab4ae73c7_b.jpg  First Snowfall                      1024     687
+  ...
+  tightfisted   8757535743  https://farm4.staticflickr.com/3786/8757535743_1c8c6b57d9_b.jpg   Teasels at the Sixteen Foot         1024     696
+  achete       15415535811  https://farm3.staticflickr.com/2949/15415535811_4eedddc4b4_b.jpg  Une nouvelle, page 12 on 17         1024    1024
+
+  Scheduled to download 10 images
+  Please enter the path of the output directory: ./tmp
+  [+] Downloaded image ID#8757535743
+
+  Downloaded 10 images:
+  keyword      id           path                                                                      downloaded?
+  one          16214454241  /Users/some/path/tmp/16214454241_3ab4ae73c7_b.jpg  true
+  ...
+  achete       15415535811  /Users/some/path/tmp/15415535811_4eedddc4b4_b.jpg  true
+
+  Please enter image resize width: 200
+  Please enter image resize height: 100
+  [+] Resized image 15415535811
+
+  Resized 10 images:
+  keyword      id           path                                                                              resized?
+  one          16214454241  /Users/some/path/tmp/resized.16214454241_3ab4ae73c7_b.jpg  true
+  ...
+  tightfisted   8757535743  /Users/some/path/tmp/resized.8757535743_1c8c6b57d9_b.jpg   true
+  achete       15415535811  /Users/some/path/tmp/resized.15415535811_4eedddc4b4_b.jpg  true
+
+  Please enter the collage file name: some.png
+  [+] Collage making
+  10 images composed
+
+  Congrats! You can find composed collage at /Users/some/path/tmp/some.png
+</code></pre>
+
+<h3>
+<a id="dict" class="anchor" href="#dict" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dict</h3>
+
+<p><strong>Ubuntu</strong>:</p>
+
+<p>If not installed, install or provide your own:</p>
+
+<pre><code>$ apt-get install --reinstall wamerican
+</code></pre>
+
+<p><strong>OSX</strong>:</p>
+
+<p>By default: <code>/usr/share/dict/words</code></p>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies:</h2>
+
+<ul>
+<li>
+<a href="https://github.com/ruby-concurrency/concurrent-ruby">Concurrent Ruby</a> lots of awesome tools.</li>
+<li>
+<a href="https://github.com/erikhuda/thor">Thor</a> for CLI base.</li>
+<li>
+<a href="https://github.com/piotrmurach/tty-spinner">Tty Spinner</a> wonderful Spinner.</li>
+<li>
+<a href="https://github.com/hanklords/flickraw">Flickraw</a> for Flickr API access.</li>
+<li>
+<a href="https://github.com/minimagick/minimagick">MiniMagick</a> as well as ImageMagick on your machine.</li>
+<li>...</li>
+</ul>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it ( <a href="https://github.com/merqlove/flickrage/fork">https://github.com/merqlove/flickrage/fork</a> )</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create a new Pull Request</li>
+</ol>
+
+<h3>
+<a id="testing" class="anchor" href="#testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing</h3>
+
+<pre><code>$ rake spec 
+</code></pre>
+
+<p>Copyright (c) 2016 Alexander Merkulov</p>
+
+<p>MIT License</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/merqlove/flickrage">Flickrage</a> is maintained by <a href="https://github.com/merqlove">merqlove</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
