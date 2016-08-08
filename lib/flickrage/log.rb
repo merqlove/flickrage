@@ -1,10 +1,10 @@
+# frozen_string_literal: true
 require 'logger'
 
 module Flickrage
   # Shared logger
   #
   class Log
-
     attr_reader   :shell
     attr_accessor :quiet, :verbose
     attr_writer   :buffer, :instance
@@ -12,9 +12,8 @@ module Flickrage
     def initialize(options = {})
       @verbose = Flickrage.config.verbose
       @quiet   = Flickrage.config.quiet
-
       options.each { |key, option| instance_variable_set(:"@#{key}", option) }
-      instance.level = Flickrage.config.log_level if instance
+      instance.level = Flickrage.config.logger_level if instance
     end
 
     def instance
@@ -38,22 +37,29 @@ module Flickrage
     end
 
     %w(yes? no?).each do |name|
-      define_method(:"#{name}") { |statement, color = :green| shell.send(:"#{name}", statement, color) }
+      define_method(:"#{name}") do |statement, color = :green|
+        shell.send(:"#{name}", statement, color) if shell
+      end
     end
 
     def print_table(*args)
-      shell.print_table(*args)
+      args[0]&.each { |row| instance.info(row) } if instance
+      shell.print_table(*args) if shell
     end
 
     def ask(statement, color: :green, path: false)
-      shell.ask(statement, color, path: path)
+      shell.ask(statement, color, path: path) if shell
+    end
+
+    def add_padding
+      shell.say_status('', '') if shell
     end
 
     def log(severity, message = nil, progname = nil, &block)
       buffer << message
       instance.add(severity, message, progname, &block) if instance.respond_to?(:add)
 
-      say message, color(severity) unless print?(severity)
+      say(message, color(severity)) unless print?(severity)
     end
 
     protected

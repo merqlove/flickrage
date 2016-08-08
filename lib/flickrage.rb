@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'flickrage/version'
 require 'dry-configurable'
 require 'dry-types'
@@ -8,9 +9,12 @@ module Flickrage
   autoload :Types,    'flickrage/types'
   autoload :Entity,   'flickrage/entity'
   autoload :Service,  'flickrage/service'
+  autoload :Worker,   'flickrage/worker'
   autoload :Pipeline, 'flickrage/pipeline'
 
   extend Dry::Configurable
+
+  MAX_DICT_LINES = 1_000_000
 
   setting :logger
   setting :logger_level, Logger::INFO
@@ -21,9 +25,13 @@ module Flickrage
 
   setting :resize_file_prefix, 'resized.'
 
+  setting :width
+  setting :height
+
   setting :pool_size, 5
   setting :pool
 
+  setting :grid, 5
   setting :max, 10
   setting :output
 
@@ -34,20 +42,14 @@ module Flickrage
   setting :flickr_shared_secret
 
   class << self
+    attr_accessor :logger
+
     def cleanup
-      config.logger.close if config.logger
+      logger.close if logger
     end
 
-    def logger
-      config.logger
-    end
-
-    def has_api_keys?
+    def api_keys?
       config.flickr_api_key && config.flickr_shared_secret
-    end
-
-    def pool
-      config.pool
     end
 
     def pool=(value)
@@ -56,11 +58,23 @@ module Flickrage
 
     def dict
       return config.dict if config.dict
+      _read_dict
+    end
+
+    def _read_dict
+      logger.debug('Caching lines from the Dict')
+
+      raise DictError, "Not found #{config.dict_path}" unless File.exist?(config.dict_path)
+      @dict_file = File.open(config.dict_path, 'r')
+
       configure do |c|
-        fail DictError, "Not found #{config.dict_path}" unless File.exist?(config.dict_path)
-        c.dict = File.readlines(config.dict_path)
+        c.dict = @dict_file.each_line.first(MAX_DICT_LINES)
       end
       config.dict
+    rescue => e
+      raise DictError, e.message
+    ensure
+      @dict_file.close if @dict_file.respond_to?(:close)
     end
   end
 
@@ -68,11 +82,29 @@ module Flickrage
   #
   class BaseError < StandardError; end
 
+  # Time is going over...
+  #
+  class SystemTimeout < BaseError
+    def initialize(*args)
+      Flickrage.logger.error 'Timeout, something going wrong...'
+      super
+    end
+  end
+
   # User did few mistakes with output path...
   #
   class PathError < BaseError
     def initialize(*args)
-      Flickrage.logger.error 'Please provide right output path...'
+      Flickrage.logger.error 'Please provide existing output path...'
+      super
+    end
+  end
+
+  # User did few mistakes with file_name...
+  #
+  class FileNameError < BaseError
+    def initialize(*args)
+      Flickrage.logger.error 'Please provide right file_name...'
       super
     end
   end
@@ -81,7 +113,7 @@ module Flickrage
   #
   class DictError < BaseError
     def initialize(*args)
-      Flickrage.logger.error 'Please provide right path to the dict...'
+      Flickrage.logger.error 'Please provide existing path to the dict...'
       super
     end
   end
@@ -99,7 +131,7 @@ module Flickrage
   #
   class SearchError < BaseError
     def initialize(*args)
-      Flickrage.logger.error "Droplet id: #{args[0]} Not Found"
+      Flickrage.logger.error "Cannot find something...: #{args[0]}"
       super
     end
   end
