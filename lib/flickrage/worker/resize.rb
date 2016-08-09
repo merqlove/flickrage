@@ -3,7 +3,7 @@ module Flickrage
   module Worker
     class Resize < Base
       MIN_IMAGE_SIZE = 100
-      MAX_IMAGE_SIZE = 500
+      MAX_IMAGE_SIZE = 1000
 
       def call(image_list)
         raise Flickrage::ResizeError, 'Not enough images for resize' if image_list.downloaded&.size < 1

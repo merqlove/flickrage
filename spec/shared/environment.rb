@@ -80,7 +80,7 @@ RSpec.shared_context 'environment' do
   end
 
   def search_request_body(req_text = text)
-    { content_type: '1', extras: 'url_l', format: 'json', method: 'flickr.photos.search',
+    { accuracy: '1', extras: 'url_m, url_z, url_c, url_l, url_o', media: 'photos', format: 'json', method: 'flickr.photos.search',
       nojsoncallback: '1', pages: '1', per_page: '1', sort: 'interestingness-desc', text: req_text }
   end
 

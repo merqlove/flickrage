@@ -4,6 +4,8 @@ module Flickrage
     class Search
       include Flickrage::Helpers::Log
 
+      FLICKR_SIZES = %w(l o c z m)
+
       attr_reader :tagged_search
 
       def initialize
@@ -24,15 +26,16 @@ module Flickrage
       private
 
       def image(result, keyword)
-        return unless result.respond_to?(:url_l)
+        size = get_image_size(result)
+        return unless size
 
         Flickrage::Entity::Image.new(
           id:      result.id,
           title:   title(result.title),
           keyword: keyword,
-          url:     result.url_l,
-          width:   result.width_l,
-          height:  result.height_l,
+          url:     result.send(:"url_#{size}"),
+          width:   result.send(:"width_#{size}"),
+          height:  result.send(:"height_#{size}"),
         )
       end
 
@@ -45,22 +48,23 @@ module Flickrage
         text[0..50] + '...'
       end
 
+      def get_image_size(result)
+        FLICKR_SIZES.detect { |t| result.respond_to?(:"url_#{t}") }
+      end
+
       def params(opts = {})
         {
-          content_type: '1',
-          extras: 'url_l',
+          extras: 'url_m, url_z, url_c, url_l, url_o',
           sort: 'interestingness-desc',
           per_page: 1,
-          pages: 1
+          pages: 1,
+          media: 'photos',
+          accuracy: 1
         }.merge(opts)
       end
 
       def search_query(keyword)
-        if tagged_search
-          {tags: [keyword]}
-        else
-          {text: keyword}
-        end
+        tagged_search ? {tags: [keyword]} : {text: keyword}
       end
     end
   end
