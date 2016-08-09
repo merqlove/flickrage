@@ -55,8 +55,7 @@ module Flickrage
       private
 
       def service
-        return @service unless @service.nil?
-        @service = Service::Resizer.new(Flickrage.config.width, Flickrage.config.height)
+        @service ||= Service::Resizer.new(Flickrage.config.width, Flickrage.config.height)
       end
 
       def init_crop_value(name)

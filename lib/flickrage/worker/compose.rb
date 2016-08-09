@@ -28,8 +28,7 @@ module Flickrage
       private
 
       def service
-        return @service unless @service.nil?
-        @service = Service::Composer.new(opts['file_name'],
+        @service ||= Service::Composer.new(opts['file_name'],
                                          Flickrage.config.width,
                                          Flickrage.config.height)
       end
