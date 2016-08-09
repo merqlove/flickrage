@@ -4,8 +4,6 @@ module Flickrage
     class Search < Base
       include Flickrage::Helpers::Dict
 
-      SYSTEM_TIMEOUT = 20
-
       def call
         keywords = opts['keywords']&.first(Flickrage.config.max) || %w()
 
@@ -53,7 +51,7 @@ module Flickrage
       end
 
       def timeout?
-        (Time.now.to_i - time) > SYSTEM_TIMEOUT
+        (Time.now.to_i - time) > Flickrage.config.search_timeout
       end
 
       def service
