@@ -223,8 +223,7 @@ module Flickrage
         logger.debug 'Checking Flickr Key\'s.'
 
         return if Flickrage.api_keys?
-        logger.error Flickrage::NoKeysError.new('You must provide Flickr API credentials via --flickr-api-key, --flickr-shared-secret via options. or have it in the environment')
-        exit
+        raise Flickrage::NoKeysError, 'You must provide Flickr API credentials via --flickr-api-key, --flickr-shared-secret via options. or have it in the environment'
       end
     end
   end
