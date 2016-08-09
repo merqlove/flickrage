@@ -147,7 +147,7 @@ module Flickrage
                   type: :string,
                   required: true,
                   aliases: %w(-o),
-                  banner: './some.png'
+                  banner: './some'
     def clean
       cleanup
     end
@@ -174,7 +174,7 @@ module Flickrage
       end
 
       def cleanup
-        return logger.debug('Output directory not exists, cleanup skipped') unless cleanup?
+        return logger.info('Output directory not exists, cleanup skipped') unless cleanup?
         FileUtils.rm_rf("#{options['output']}/.", secure: true)
       end
 
