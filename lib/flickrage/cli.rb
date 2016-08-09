@@ -111,6 +111,11 @@ module Flickrage
                   type: :boolean,
                   aliases: %w(-c),
                   desc: 'Cleanup files before collage.'
+    method_option :tagged_search,
+                  default: false,
+                  aliases: %w(-t),
+                  type: :boolean,
+                  desc: 'Search by tags.'
     method_option :verbose,
                   type: :boolean,
                   aliases: %w(-v),
@@ -200,6 +205,8 @@ module Flickrage
           config.max    = options['max']  if options['max']
           config.grid   = options['grid'] if options['grid']
           config.output = options['output']
+
+          config.tagged_search = options['tagged_search']
         end
       end
 

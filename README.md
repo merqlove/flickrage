@@ -93,6 +93,7 @@ Provide your own words dictionary:
           [--file-name=./some.png]                       # Name for the file with collage.
           [--dict-path=/usr/share/dict/words]            # Path to the file with multiline words (dictionary).
       -c, [--cleanup], [--no-cleanup]                    # Cleanup files before collage.
+      -t, [--tagged-search], [--no-tagged-search]        # Search by tags.
       -v, [--verbose], [--no-verbose]                    # Verbose mode.
       -q, [--quiet], [--no-quiet]                        # Quiet mode. If don't need any messages and in console.
           [--flickr-api-key=YOURLONGAPIKEY]              # FLICKR_API_KEY. if you can't use environment.

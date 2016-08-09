@@ -4,6 +4,12 @@ module Flickrage
     class Search
       include Flickrage::Helpers::Log
 
+      attr_reader :tagged_search
+
+      def initialize
+        @tagged_search = Flickrage.config.tagged_search
+      end
+
       def run(keyword)
         result = search(keyword)
 
@@ -31,7 +37,7 @@ module Flickrage
       end
 
       def search(keyword)
-        flickr.photos.search(params(text: keyword))
+        flickr.photos.search(params(search_query(keyword)))
       end
 
       def title(text)
@@ -47,6 +53,14 @@ module Flickrage
           per_page: 1,
           pages: 1
         }.merge(opts)
+      end
+
+      def search_query(keyword)
+        if tagged_search
+          {tags: [keyword]}
+        else
+          {text: keyword}
+        end
       end
     end
   end
