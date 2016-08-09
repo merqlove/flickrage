@@ -31,6 +31,9 @@ module Flickrage
   setting :pool_size, 5
   setting :pool
 
+  setting :search_timeout, 30
+  setting :download_timeout, 10
+
   setting :grid, 2
   setting :max, 10
   setting :output

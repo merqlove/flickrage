@@ -19,7 +19,7 @@ module Flickrage
 
       private
 
-      def download_file(uri, path, limit = 10)
+      def download_file(uri, path, limit = Flickrage.config.download_timeout)
         raise Flickrage::DownloadError, 'Redirect limit arrived' if limit.zero?
 
         Net::HTTP.start(uri.host, uri.port,
