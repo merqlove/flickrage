@@ -43,6 +43,10 @@ module Flickrage
         total == Flickrage.config.max
       end
 
+      def estimate
+        Flickrage.config.max - total
+      end
+
       def merge_not_founds(new_not_founds)
         @not_founds = not_founds + new_not_founds
         self

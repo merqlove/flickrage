@@ -202,11 +202,16 @@ module Flickrage
           config.width  = options['width']  if options['width']
           config.height = options['height'] if options['height']
 
-          config.max    = options['max']  if options['max']
           config.grid   = options['grid'] if options['grid']
           config.output = options['output']
 
           config.tagged_search = options['tagged_search']
+
+          config.max = options['max'] if options['max']
+          if config.max < 3
+            STDERR.puts('Minimal value of max is: 3')
+            config.max = 3
+          end
         end
       end
 

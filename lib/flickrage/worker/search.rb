@@ -7,12 +7,14 @@ module Flickrage
       def call
         keywords = opts['keywords']&.first(Flickrage.config.max) || %w()
 
+        speaker.add_padding
+        logger.debug('Searching process')
+        logger.info("Received keywords: [#{keywords.join(', ')}]")
+
         keywords += sample_words(Flickrage.config.max - keywords.size)
         keys = keywords.join(', ')
 
-        speaker.add_padding
-        logger.debug('Searching process')
-        logger.info("Received keywords: [#{keys}]")
+        logger.info("Extended keywords: [#{keys}]")
 
         @spin = spinner(message: 'Searching ')
 
@@ -21,8 +23,8 @@ module Flickrage
         if image_list.valid?
           spin.success
         else
-          spin.error('(nothing found)')
-          raise Flickrage::SearchError
+          spin.error('(not enough images or nothing found)')
+          raise Flickrage::SearchError, 'Image list is not valid'
         end
 
         speaker.add_padding
@@ -55,15 +57,15 @@ module Flickrage
       end
 
       def service
-        @service ||= Service::Search.new
+        @service ||= Service::Search
       end
 
       def finder(keywords, spin, image_list = nil)
-        files = keywords.map do |k|
+        images = keywords.map do |k|
           Concurrent
             .future(thread_pool) do
               update_spin(spin, title: "Searching (keyword: #{k})")
-              service.run(k)
+              service.new.run(k)
             end
             .then do |r|
               update_spin(spin, title: "Searching (found image ID##{r.id})") if r
@@ -72,7 +74,7 @@ module Flickrage
             .rescue { |_| nil }
         end
 
-        result = Concurrent.zip(*files).value
+        result = Concurrent.zip(*images).value
         result = result.compact.flatten if result
 
         if image_list
@@ -90,7 +92,7 @@ module Flickrage
         not_founds = keywords - success_keywords
         image_list.merge_not_founds(not_founds)
 
-        keywords = sample_words_strict(not_founds&.size || 0, except: image_list.not_founds)
+        keywords = sample_words_strict(image_list.estimate, except: image_list.not_founds)
         return image_list if keywords.size.zero?
 
         finder(keywords, spin, image_list)

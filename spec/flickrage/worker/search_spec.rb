@@ -32,7 +32,7 @@ RSpec.describe Flickrage::Worker::Search do
 
       expect(a_request(:post, api_url).with(body: reflection_request_body))
         .to have_been_made.at_least_times(0)
-      expect(a_request(:post, api_url).with(body: hash_including(extras: 'url_l', sort: 'interestingness-desc')))
+      expect(a_request(:post, api_url).with(body: hash_including(extras: 'url_m, url_z, url_c, url_l, url_o', sort: 'interestingness-desc')))
         .to have_been_made.times(10)
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Flickrage::Worker::Search do
 
       expect(a_request(:post, api_url).with(body: reflection_request_body))
         .to have_been_made.at_least_times(0)
-      expect(a_request(:post, api_url).with(body: hash_including(extras: 'url_l', sort: 'interestingness-desc')))
+      expect(a_request(:post, api_url).with(body: hash_including(extras: 'url_m, url_z, url_c, url_l, url_o', sort: 'interestingness-desc')))
         .to have_been_made.times(12)
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe Flickrage::Worker::Search do
 
       expect(a_request(:post, api_url).with(body: reflection_request_body))
         .to have_been_made.at_least_times(0)
-      expect(a_request(:post, api_url).with(body: hash_including(extras: 'url_l', sort: 'interestingness-desc')))
+      expect(a_request(:post, api_url).with(body: hash_including(extras: 'url_m, url_z, url_c, url_l, url_o', sort: 'interestingness-desc')))
         .to have_been_made.times(20)
     end
   end
