@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Alexander Merkulov']
   spec.email         = ['sasha@merqlove.ru']
 
-  spec.summary       = %q{Another one Flickr collage maker.}
-  spec.description   = %q{Another one Flickr collage maker.}
+  spec.summary       = %q{Another one Flickr collage maker CLI.}
+  spec.description   = %q{Another one Flickr collage maker CLI.}
   spec.homepage      = 'https://github.com/merqlove/flickrage'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|assets|spec|features)/}) }
