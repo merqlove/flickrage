@@ -211,7 +211,7 @@ module Flickrage
           config.output = options['output']
 
           config.tagged_search = options['tagged_search']
-          config.search_params = symbolyze_keys(options['params']) if options['params']
+          config.search_params = options['params'] if options['params']
 
           config.max = options['max'] if options['max']
           if config.max < 3
