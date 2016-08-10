@@ -36,6 +36,7 @@ module Flickrage
   setting :search_timeout, 30
   setting :download_timeout, 10
 
+  setting :search_params, {}
   setting :grid, 2
   setting :max, 10
   setting :output

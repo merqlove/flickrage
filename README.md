@@ -81,23 +81,25 @@ Provide your own words dictionary:
     > $ flickrage help c 
     
     Options:
-      -k, --keywords=some nice grapefruit                
-          [--max=10]                                     # Select number of files.
-                                                         # Default: 10
-                                                         # Possible values: 1, ..., 20
-          [--grid=2]                                     # Select grid base number.
-          [--width=120]                                  # Set width for resize downloaded images.
-          [--height=80]                                  # Set height for resize downloaded images.
-      -l, [--log=/Users/someone/.flickrage/main.log]     # Log file path. By default logging is disabled.
-      -o, [--output=./tmp]                               # Output directory, where all data will be stored.
-          [--file-name=./some.png]                       # Name for the file with collage.
-          [--dict-path=/usr/share/dict/words]            # Path to the file with multiline words (dictionary).
-      -c, [--cleanup], [--no-cleanup]                    # Cleanup files before collage.
-      -t, [--tagged-search], [--no-tagged-search]        # Search by tags.
-      -v, [--verbose], [--no-verbose]                    # Verbose mode.
-      -q, [--quiet], [--no-quiet]                        # Quiet mode. If don't need any messages and in console.
-          [--flickr-api-key=YOURLONGAPIKEY]              # FLICKR_API_KEY. if you can't use environment.
-          [--flickr-shared-secret=YOURLONGSHAREDSECRET]  # FLICKR_SHARED_SECRET. if you can't use environment.
+      -k, --keywords=some nice grapefruit                        
+          [--max=10]                                             # Select number of files.
+                                                                 # Default: 10
+                                                                 # Possible values: 1, ..., 20
+          [--grid=2]                                             # Select grid base number.
+          [--width=120]                                          # Set width for resize downloaded images.
+          [--height=80]                                          # Set height for resize downloaded images.
+      -l, [--log=/Users/someone/.flickrage/main.log]             # Log file path. By default logging is disabled.
+      -o, [--output=./tmp]                                       # Output directory, where all data will be stored.
+          [--file-name=./some.png]                               # Name for file with collage.
+          [--dict-path=/usr/share/dict/words]                    # Path to file with multiline words (dictionary).
+      -c, [--cleanup], [--no-cleanup]                            # Cleanup files before collage.
+      -t, [--tagged-search], [--no-tagged-search]                # Search by tags.
+      -p, [--params=safe_search:moderate sort:date-posted-desc]  # Set extra params for Flickr.
+      -v, [--verbose], [--no-verbose]                            # Verbose mode.
+      -q, [--quiet], [--no-quiet]                                # Quiet mode. If don't need any messages and in console.
+          [--flickr-api-key=YOURLONGAPIKEY]                      # FLICKR_API_KEY. if you can't use environment.
+          [--flickr-shared-secret=YOURLONGSHAREDSECRET]          # FLICKR_SHARED_SECRET. if you can't use environment.
+
   
     `flickrage` is a tool which loves search on the Flickr & making collages from findings.
     

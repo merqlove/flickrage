@@ -116,6 +116,11 @@ module Flickrage
                   aliases: %w(-t),
                   type: :boolean,
                   desc: 'Search by tags.'
+    method_option :params,
+                  type: :hash,
+                  aliases: %w( -p ),
+                  banner: 'safe_search:moderate sort:date-posted-desc',
+                  desc: 'Set extra params for Flickr.'
     method_option :verbose,
                   type: :boolean,
                   aliases: %w(-v),
@@ -206,6 +211,7 @@ module Flickrage
           config.output = options['output']
 
           config.tagged_search = options['tagged_search']
+          config.search_params = symbolyze_keys(options['params']) if options['params']
 
           config.max = options['max'] if options['max']
           if config.max < 3

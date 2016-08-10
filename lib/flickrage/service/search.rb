@@ -6,10 +6,11 @@ module Flickrage
 
       FLICKR_SIZES = %w(l o c z m)
 
-      attr_reader :tagged_search
+      attr_reader :tagged_search, :search_params
 
       def initialize
         @tagged_search = Flickrage.config.tagged_search
+        @search_params = Flickrage.config.search_params
       end
 
       def run(keyword)
@@ -60,7 +61,7 @@ module Flickrage
           pages: 1,
           media: 'photos',
           accuracy: 1
-        }.merge(opts)
+        }.merge(opts).merge(search_params)
       end
 
       def search_query(keyword)
