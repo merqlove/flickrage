@@ -26,6 +26,7 @@ RSpec.shared_context 'environment' do
   let(:log_path)            { "#{project_path}/log/test.log" }
   let(:log)                 { Thor::CoreExt::HashWithIndifferentAccess.new(log: log_path) }
 
+  let(:req_opts)            { {} }
   let(:api_url)             { 'https://api.flickr.com/services/rest/' }
   let(:reflection_request_body) { { format: 'json', method: 'flickr.reflection.getMethods', nojsoncallback: '1' } }
 
@@ -69,19 +70,19 @@ RSpec.shared_context 'environment' do
 
   def stub_search(req_text = text, *args)
     stub_request(:post, api_url)
-      .with(body: search_request_body(req_text))
+      .with(body: search_request_body(req_text, req_opts))
       .to_return(status: 200, body: search_response_body(*args), headers: {})
   end
 
   def stub_search_fail(req_text = text)
     stub_request(:post, api_url)
-      .with(body: search_request_body(req_text))
+      .with(body: search_request_body(req_text, req_opts))
       .to_return(status: 200, body: fixture('photos.search.empty'), headers: {})
   end
 
-  def search_request_body(req_text = text)
+  def search_request_body(req_text = text, options = {})
     { accuracy: '1', extras: 'url_m, url_z, url_c, url_l, url_o', media: 'photos', format: 'json', method: 'flickr.photos.search',
-      nojsoncallback: '1', pages: '1', per_page: '1', sort: 'interestingness-desc', text: req_text }
+      nojsoncallback: '1', pages: '1', per_page: '1', sort: 'interestingness-desc', text: req_text }.merge(options)
   end
 
   def search_response_body(req_url: url_l, req_id: id, req_title: title, req_width: width_l, req_height: height_l)
