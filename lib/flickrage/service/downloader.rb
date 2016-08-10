@@ -55,11 +55,15 @@ module Flickrage
       end
 
       def file_name(uri)
-        File.basename(uri.path)
+        "#{nsec}_" + File.basename(uri.path)
       end
 
       def check_image(image)
         File.exist?(image.local_path) ? image.finish_download : image
+      end
+
+      def nsec
+        Time.now.nsec
       end
     end
   end

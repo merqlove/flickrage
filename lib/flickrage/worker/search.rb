@@ -5,7 +5,7 @@ module Flickrage
       include Flickrage::Helpers::Dict
 
       def call
-        keywords = opts['keywords']&.first(Flickrage.config.max) || %w()
+        keywords = opts['keywords']&.uniq&.first(Flickrage.config.max) || %w()
 
         speaker.add_padding
         logger.debug('Searching process')
