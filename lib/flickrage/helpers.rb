@@ -33,14 +33,16 @@ module Flickrage
 
     module Tty
       def spinner(message: '', format: :dots)
-        spin = TTY::Spinner.new('[:spinner] :title',
-                                format: format,
-                                interval: 20,
-                                hide_cursor: true,
-                                success_mark: color(color: :green, message: '+'),
-                                error_mark: color(color: :red, message: 'x'))
+        options = {
+          format: format,
+          interval: 20,
+          hide_cursor: true,
+          success_mark: color(color: :green, message: '+'),
+          error_mark: color(color: :red, message: 'x')
+        }.merge(Flickrage.config.spinner_options)
+        spin = TTY::Spinner.new('[:spinner] :title', options)
         spin.update(title: message)
-        spin.start
+        Flickrage.config.auto_spin ? spin.auto_spin : spin.start
 
         return spin unless block_given?
 

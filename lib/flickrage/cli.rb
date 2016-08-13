@@ -130,6 +130,19 @@ module Flickrage
                   aliases: %w(-q),
                   desc: 'Quiet mode. If don\'t need any messages and in console.'
 
+    # Tty-Spinner Debug options
+    method_option :auto_spin,
+                  type: :boolean,
+                  default: true
+    method_option :force_spin,
+                  type: :boolean,
+                  default: false
+    method_option :force_clear_line,
+                  type: :boolean,
+                  default: false
+    method_option :spinner_options,
+                  type: :hash
+
     method_option :flickr_api_key,
                   type: :string,
                   banner: 'YOURLONGAPIKEY',
@@ -218,6 +231,10 @@ module Flickrage
             STDERR.puts('Minimal value of max is: 3')
             config.max = 3
           end
+
+          # Tty-Spinner debug options
+          config.auto_spin       = options['auto_spin']
+          config.spinner_options = options['spinner_options'] if options['spinner_options']
         end
       end
 

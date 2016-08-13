@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'dry-configurable', '~> 0.1.7'
   spec.add_dependency 'dry-types', '~> 0.8.1'
   spec.add_dependency 'concurrent-ruby-edge'
-  spec.add_dependency 'tty-spinner', '~> 0.3.0'
+  spec.add_dependency 'tty-spinner', '~> 0.4'
   spec.add_dependency 'pastel', '~> 0.6.0'
 
   spec.add_development_dependency 'bundler', '~> 1.12'

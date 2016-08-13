@@ -47,6 +47,10 @@ module Flickrage
   setting :flickr_api_key
   setting :flickr_shared_secret
 
+  # Tty-Spinner debug options
+  setting :auto_spin, true
+  setting :spinner_options, {}
+
   class << self
     attr_accessor :logger
 

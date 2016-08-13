@@ -69,9 +69,9 @@ module Flickrage
       #
 
       def update_spin(spin, tags)
-        spin.clear_line
+        spin.clear_line if opts['force_clear_line']
         spin.update(tags)
-        spin.spin
+        spin.spin if opts['force_spin']
       end
     end
   end
