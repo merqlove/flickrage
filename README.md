@@ -2,6 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/flickrage.svg)](http://badge.fury.io/rb/flickrage)
 [![Build Status](https://travis-ci.org/merqlove/flickrage.svg?branch=master)](https://travis-ci.org/merqlove/flickrage)
+[![Coverage Status](https://coveralls.io/repos/github/merqlove/flickrage/badge.svg?branch=master)](https://coveralls.io/github/merqlove/flickrage?branch=master)
 
 Little tool with idea of downloading random top-n pictures from the Flickr, resize it properly & build collage from them!
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-# require 'coveralls'
-# Coveralls.wear! do
-#   add_filter '/spec/*'
-# end
+require 'coveralls'
+Coveralls.wear! do
+  add_filter '/spec/*'
+end
 
 require 'bundler'
 Bundler.setup
@@ -11,7 +11,6 @@ require 'flickrage/cli'
 require 'webmock/rspec'
 require 'fileutils'
 require 'mini_magick'
-# require 'phashion'
 require_relative 'shared/environment'
 
 WebMock.disable_net_connect!(allow_localhost: true)
